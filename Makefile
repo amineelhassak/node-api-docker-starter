@@ -67,6 +67,15 @@ rebuild:
 	make build
 	make up
 
+containers:
+	@docker ps -a
+images:
+	@docker images
+
+
+
+
+
 # Step 11: Default target
 # If no target is specified, the default is to build and run the services
 .DEFAULT_GOAL := up
