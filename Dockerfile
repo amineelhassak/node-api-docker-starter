@@ -11,4 +11,4 @@ COPY ./srcs /app/srcs
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["npm","run","start-dev"]
