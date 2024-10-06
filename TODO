@@ -1,0 +1,50 @@
+install node_modeles_repo:
+    npm install express --save
+nodemonlocal:
+    npm install nodemon --save-dev
+docker build -t name_img .
+docker run -d -p 8080:80 name_img
+Lists all container:
+    docker ps -aq (q for ids)
+Remove all containers:
+    docker rm $(docker ps -aq)
+Stop all running containers:
+    docker stop $(docker ps -aq)
+Run the Docker Container:
+    docker run -d -p 3306:3306 --name mariadb-container name_img
+start a bash shell session:
+    docker exec -it name_cotainer bash
+displays images:
+    docker images
+display status runing:
+    docker logs container
+hot reload (No need to rebuild the image):
+    docker run -v /Users/amel-has/Desktop/inception/project/srcs/requirements/mariadb:/app -d -p 3306:3306 --name mariadb-container name_img
+    docker run -v ($pwd):/app:ro(read only) -d -p 3306:3306 --name mariadb-container name_img
+anonymous volume docker:
+    docker run -v repownatsave -d -p 3306:3306 --name mariadb-container name_img
+bind amount:
+    docker run -d -it --name devtest mount type=bind,source="$(pwd)"/target,target=/app nginx:latest
+
+Differences between -v and --mount behavior:
+    Because the -v and --volume flags have been a part of Docker for a long time, their behavior cannot be changed. This means that there is one behavior that is different between -v and --mount.
+    If you use -v or --volume to bind-mount a file or directory that does not yet exist on the Docker host, -v creates the endpoint for you. It is always created as a directory.
+    If you use --mount to bind-mount a file or directory that does not yet exist on the Docker host, Docker does not automatically create it for you, but generates an error.
+MariaDB:
+    Default Port: 3306
+WordPress:
+    Default Port: 80 (HTTP) / 443 (HTTPS)
+Nginx:
+    Default Port: 80 (HTTP) / 443 (HTTPS)
+nodejs (CMDS):
+    npm init
+    npm install
+    npm run nodemon
+    node index.js
+start docker-compose:
+    docker-compose up -d(detach)
+    docke-compose down (down containers)
+
+    docker-compose down
+    docker-compose build
+    docker-compose up

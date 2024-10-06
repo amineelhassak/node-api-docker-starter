@@ -1,0 +1,20 @@
+{
+  "name": "docker-node-mongo-starter",
+  "version": "1.0.0",
+  "description": "This repository features a Dockerized application built with Node.js and MongoDB.",
+  "main": "./srcs/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./srcs/index.js",
+    "start-dev": "nodemon ./srcs/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

@@ -1,0 +1,11 @@
+version: '2'
+services:
+  app:
+    container_name: docker-node-mongo-starter-app
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./srcs:/app/srcs:ro
+    working_dir: /app/srcs
+    command: npm start
