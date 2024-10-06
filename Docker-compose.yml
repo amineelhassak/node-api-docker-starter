@@ -8,4 +8,10 @@ services:
     volumes:
       - ./srcs:/app/srcs:ro
     working_dir: /app/srcs
-    # command: npm start
+    env_file:
+      - .env
+    command: npm run start-dev  # Use your command to start the application
+
+  mongo:
+    image: mongo
+    restart: always
