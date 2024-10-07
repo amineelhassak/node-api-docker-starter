@@ -1,17 +1,12 @@
-version: '2'
+version: '3'
 services:
-  app:
-    container_name: docker-node-mongo-starter-app
+  web:
     build: .
     ports:
       - "3000:3000"
-    volumes:
-      - ./srcs:/app/srcs:ro
-    working_dir: /app/srcs
-    env_file:
-      - .env
-    command: npm run start-dev  # Use your command to start the application
-
+    depends_on:
+      - mongo
   mongo:
     image: mongo
-    restart: always
+    ports:
+      - "27017:27017"
