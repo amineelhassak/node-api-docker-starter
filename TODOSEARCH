@@ -1,0 +1,1 @@
+You can mix and match these approaches depending on your needs. For example, use JWT for API authentication and bcrypt for password storage.
