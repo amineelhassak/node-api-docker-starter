@@ -1,21 +1,26 @@
 const express = require('express');
-const dotenv = require('dotenv');
-dotenv.config();
 const connectDb = require('./config/db');
-
+const mongoose = require('mongoose');
+const port = 3002;
 const app = express();
+const bodyParser = require('body-parser');
+const db = mongoose.connection;
 
-connectDb();
-const port = process.env.NODE_LOCAL_PORT || 3000;
-app.use(express.json());
-app.use(express.urlencoded({extended :true }));
+connectDb(); // Connect to your database
 
-app.get('/',(req,res) => {
-    res.send('hello World !');
+// Middleware for parsing request bodies
+app.use(bodyParser.json());
+app.use(express.json()); // Handles JSON requests
+app.use(express.urlencoded({ extended: true })); // Handles URL-encoded requests
+
+db.on('error', () => {
+    console.error('Error!');
 });
 
-app.use('/',require('./routes/user'));
-
-app.listen(port,() => {
-    console.log('server is runing on port ${port}');
+db.once("open", () => {
+    app.use('/', require('./routes/salon')); // Prefix routes with '/api'
+    console.log('Open successfully!');
+    app.listen(port, () => {
+        console.log('Listening on port 3000');
+    });
 });
