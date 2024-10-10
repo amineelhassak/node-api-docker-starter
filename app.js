@@ -1,33 +1,18 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const connectDb = require('./config/db');
 
-
 const port = 3002;
-var app;
-var db;
-
-// db = mongoose.connection;//
 connectDb();
 
-// Middleware for parsing request bodies
-app = express();
+const app = express();
 app.use(bodyParser.json());
-app.use(express.json()); // Handles JSON requests
-app.use(express.urlencoded({ extended: true })); // Handles URL-encoded requests
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// db.on('error', () => {
-//     console.error('Error!');
-// });
+app.use('/', require('./routes/salon'));
 
+app.listen(port, () => {
+    console.log('Listening on port 3000');
+});
 
-// db.once("open", () => {
-    app.use('/', require('./routes/salon')); // Prefix routes with '/api'
-    
-    console.log('Open successfully!');
-
-    app.listen(port, () => {
-        console.log('Listening on port 3000');
-    });
-// });
