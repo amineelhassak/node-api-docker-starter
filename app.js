@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const connectDb = require('./config/db');
+require('dotenv').config();
 
-const port = 3002;
+const port = process.env.PORT || 3000;;
 connectDb();
 
 const app = express();
@@ -13,6 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', require('./routes/salon'));
 
 app.listen(port, () => {
-    console.log('Listening on port 3000');
+    console.log(`Listening on port ${port}`);
 });
 
