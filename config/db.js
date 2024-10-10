@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const url = 'mongodb://mongo:27017/docker-node-mongo';
+const url = 'mongodb+srv://amine:Azer1234@amine.agj6pga.mongodb.net/dbs?retryWrites=true&w=majority&appName=amine';
 
 const connectDB = async () => {
     try {

@@ -1,15 +1,25 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const Salon = require('../models/salon');
+const {Salon, validateSalon} = require('../models/salon');
+const { reset } = require('nodemon');
+const router = express.Router();
 
-const router = express.Router(); // Use 'router' instead of 'app' for modular routing
+router.get("/",(req,res) => {
+    res.send("this good");
+});
 
-// Middleware
-router.use(bodyParser.json());
+/**
+ * @desc post new Salon
+ * @route /salons
+ * @method Post
+ * @access public
+ **/
 
 router.post('/salons', async (req, res) => {
-    // res.json({message : 'rak nadi 1'});
     try {
+        const { error } = validateSalon(req.body);
+        if (error) {
+            return res.status(400).json({ message: error.details[0].message });
+        }
         const salon = new Salon(req.body);
         await salon.save();
         res.status(201).send(salon);
@@ -17,6 +27,14 @@ router.post('/salons', async (req, res) => {
         res.status(400).send(error);
     }
 });
+
+/**
+ * @desc Get all Salons
+ * @route /salons
+ * @method Get
+ * @access public 
+ **/
+
 
 router.get('/salons', async (req, res) => {
     try {
@@ -26,6 +44,13 @@ router.get('/salons', async (req, res) => {
         res.status(500).send(error);
     }
 });
+
+/**
+ * @desc Get all Salons by id
+ * @route /salons/id
+ * @method Get
+ * @access public
+ **/
 
 router.get('/salons/:id', async (req, res) => {
     res.json({message : 'rak nadi 3'});
@@ -40,26 +65,24 @@ router.get('/salons/:id', async (req, res) => {
 });
 
 router.put('/salons/:id', async (req, res) => {
-    res.json({message : 'rak nadi 4'});
-    // try {
-    //     const salon = await Salon.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    //     if (!salon) return res.status(404).send('Salon not found');
-    //     res.send(salon);
-    // } catch (error) {
-    //     res.status(400).send(error);
-    // }
+    try {
+        const salon = await Salon.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        if (!salon) return res.status(404).send('Salon not found');
+        res.send(salon);
+    } catch (error) {
+        res.status(400).send(error);
+    }
 });
 
 router.delete('/salons/:id', async (req, res) => {
-    res.json({message : 'rak nadi 5'});
-
-    // try {
-    //     const salon = await Salon.findByIdAndDelete(req.params.id);
-    //     if (!salon) return res.status(404).send('Salon not found');
-    //     res.send(salon);
-    // } catch (error) {
-    //     res.status(500).send(error);
-    // }
+    try
+    {
+        const salon = await Salon.findByIdAndDelete(req.params.id);
+        if (!salon) return res.status(404).send('Salon not found');
+        res.send(salon);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
 module.exports = router;
