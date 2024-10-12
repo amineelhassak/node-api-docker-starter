@@ -9,3 +9,9 @@ MongoDB Atlas offers a free tier known as the M0 Sandbox. This is a good startin
 
 Select your preferred cloud provider (AWS, Google Cloud, or Azure).
 Pick a region. Some regions support the free tier, so be sure to pick a region that’s closest to your primary user base to reduce latency.
+
+
+
+the last tasks :
+
+Prisma : https://medium.com/@himanshu.zeddlabs/using-prisma-with-node-js-a-guide-for-developers-1d5932a3b041
