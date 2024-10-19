@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const Joi = require('joi');
-const { Schema } = mongoose;
 
-const salonSchema = new Schema({
+const salonSchema = new mongoose.Schema({
     salon_id: {
         type: Number,
         required: true,
@@ -41,7 +39,7 @@ const salonSchema = new Schema({
     email: {
         type: String,
         required: true,
-        trim: true,
+        index: { unique: true }, 
     },
     dated: {
         type: Date,
@@ -49,22 +47,25 @@ const salonSchema = new Schema({
     },
 });
 
-const salonValidationSchema = Joi.object({
-    name: Joi.string().trim().min(3).max(10).required(),
-    password: Joi.string().min(8).required(),
-    email: Joi.string().email().required(),
-    address: Joi.string().min(3).required(),
-    description: Joi.string().trim().min(10).max(1000),
-    phone_number: Joi.string().required(),
-    subscription:Joi.bool(),
-    dated: Joi.date(),
-});
+// const salonValidationSchema = Joi.object({
+//     name: Joi.string().trim().min(3).max(10).required(),
+//     password: Joi.string().min(8).required(),
+//     email: Joi.string().email().required(),
+//     address: Joi.string().min(3).required(),
+//     description: Joi.string().trim().min(10).max(1000),
+//     phone_number: Joi.string().required(),
+//     subscription:Joi.bool(),
+//     dated: Joi.date(),
+//     salon_id:Joi.number(),
+// });
 
-const validateSalon = (salon) => {
-    return salonValidationSchema.validate(salon);
-};
+// const validateSalon = (salon) => {
+//     return salonValidationSchema.validate(salon);
+// };
 
 module.exports = {
     Salon: mongoose.model('Salon', salonSchema),
-    validateSalon,
+    // validateSalon,
 };
+
+
