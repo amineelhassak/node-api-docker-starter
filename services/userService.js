@@ -10,12 +10,12 @@ const ApiError = require("../utils/ApiError");
  * @access Private
 **/
 const getUsers = asyncHandler(async (req, res) => {
-    // const page = req.query.page || 1;
-    // const limit = req.query.limit || 5;
-    // const skip = (page - 1) * limit;
     const users = await User.find();
-    // .limit(limit).skip(skip);
-    res.status(200).send(users);
+    res.status(200).json({
+        success: true,
+        count: users.length,
+        data: users
+    });
 });
 
 // POST new user
@@ -28,7 +28,11 @@ const getUsers = asyncHandler(async (req, res) => {
 const addUser = asyncHandler(async (req, res) => {
     const user = new User(req.body);
     await user.save();
-    res.status(201).send("User added successfully");
+    res.status(201).json({
+        success: true,
+        message: "User added successfully",
+        data: user
+    });
 });
 // DELETE all users
 /**
@@ -39,7 +43,10 @@ const addUser = asyncHandler(async (req, res) => {
  **/
 const deleteAll = asyncHandler(async (req, res) => {
     await User.deleteMany();
-    res.status(200).send("All users have been deleted");
+    res.status(200).json({
+        success: true,
+        message: "All users have been deleted"
+    });
 });
 
 // DELETE one user by ID
@@ -49,12 +56,16 @@ const deleteAll = asyncHandler(async (req, res) => {
  * @method DELETE
  * @access Private
  **/
-const deleteUser = asyncHandler(async (req, res,next) => {
+const deleteUser = asyncHandler(async (req, res, next) => {
     const user = await User.findByIdAndDelete(req.params.id);
-    if (user)
-        res.status(200).send("User deleted successfully");
-    else
+    if (user) {
+        res.status(200).json({
+            success: true,
+            message: "User deleted successfully"
+        });
+    } else {
         return next(new ApiError(`User not found ${req.params.id}`, 404));
+    }
 });
 
 // PUT update a user by ID
@@ -64,12 +75,16 @@ const deleteUser = asyncHandler(async (req, res,next) => {
  * @method PUT
  * @access Private
  **/
-const updateUser = asyncHandler(async (req, res) =>{
+const updateUser = asyncHandler(async (req, res, next) => {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (user) {
-        res.status(200).send("User updated successfully");
+        res.status(200).json({
+            success: true,
+            message: "User updated successfully",
+            data: user
+        });
     } else {
-        res.status(404).send("User not found");
+        return next(new ApiError("User not found", 404));
     }
 });
 
@@ -81,13 +96,16 @@ const updateUser = asyncHandler(async (req, res) =>{
  * @access Private
  **/
 
-const getUser = asyncHandler(async (req, res) => {
-        const user = await User.findById(req.params.id);
-        if (user) {
-            res.status(200).send(user);
-        } else {
-            res.status(404).send("User not found");
-        }
+const getUser = asyncHandler(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } else {
+        return next(new ApiError("User not found", 404));
+    }
 });
 
 // Export the functions

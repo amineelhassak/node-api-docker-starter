@@ -1,9 +1,6 @@
 const express = require('express'); 
-
-// const {Salon, validateSalon} = require('../models/salon'); 
 const {Salon} = require('../models/salon'); 
-
-console.log(Salon);
+const ApiError = require('../utils/ApiError');
 const router = express.Router(); 
 
 // /**
@@ -23,18 +20,16 @@ router.get("/",(req, res) => {
 //  * @access Public
 //  **/
 
-router.post('/salons', async (req, res) => {
+router.post('/salons', async (req, res, next) => {
     try {
-        // const { error } = validateSalon(req.body);
-        // if (error) {
-        //     return res.status(400).json({ message: error.details[0].message });
-        // }
         const salon = new Salon(req.body); 
-        console.log(salon);
         await salon.save(); 
-        res.status(201).send(salon);
+        res.status(201).json({
+            success: true,
+            data: salon
+        });
     } catch (error) {
-        res.status(400).send(error); 
+        next(new ApiError(error.message, 400));
     }
 });
 
@@ -44,12 +39,16 @@ router.post('/salons', async (req, res) => {
  * @method GET
  * @access Public
  **/
-router.get('/salons', async (req, res) => {
+router.get('/salons', async (req, res, next) => {
     try {
         const salons = await Salon.find(); 
-        res.send(salons); 
+        res.json({
+            success: true,
+            count: salons.length,
+            data: salons
+        }); 
     } catch (error) {
-        res.status(500).send(error); 
+        next(new ApiError(error.message, 500));
     }
 });
 
@@ -60,12 +59,15 @@ router.get('/salons', async (req, res) => {
  * @method DELETE
  * @access Public
  **/
-router.delete('/salons', async (req, res) => {
+router.delete('/salons', async (req, res, next) => {
     try {
         await Salon.deleteMany();
-        res.status(200).send('All salons have been deleted successfully.');
+        res.status(200).json({
+            success: true,
+            message: 'All salons have been deleted successfully.'
+        });
     } catch (error) {
-        res.status(500).send(error);
+        next(new ApiError(error.message, 500));
     }
 });
 
@@ -76,13 +78,18 @@ router.delete('/salons', async (req, res) => {
  * @access Public
  **/
 
-router.get('/salons/:id', async (req, res) => {
+router.get('/salons/:id', async (req, res, next) => {
     try {
         const salon = await Salon.findById(req.params.id); 
-        if (!salon) return res.status(404).send('Salon not found'); 
-        res.send(salon); 
+        if (!salon) {
+            return next(new ApiError('Salon not found', 404));
+        }
+        res.json({
+            success: true,
+            data: salon
+        }); 
     } catch (error) {
-        res.status(500).send(error); 
+        next(new ApiError(error.message, 500));
     }
 });
 
@@ -92,18 +99,22 @@ router.get('/salons/:id', async (req, res) => {
  * @method PUT
  * @access Public
  **/
-router.put('/salons/:id', async (req, res) => {
+router.put('/salons/:id', async (req, res, next) => {
     try {
         const salon = await Salon.findByIdAndUpdate(
             req.params.id, 
             req.body, 
             { new: true, runValidators: true }
         ); 
-        if (!salon)
-            return res.status(404).send('Salon not found'); 
-        res.status(200).end();
+        if (!salon) {
+            return next(new ApiError('Salon not found', 404));
+        }
+        res.json({
+            success: true,
+            data: salon
+        });
     } catch (error) {
-        res.status(400).send(error); 
+        next(new ApiError(error.message, 400));
     }
 });
 
@@ -113,13 +124,19 @@ router.put('/salons/:id', async (req, res) => {
  * @method DELETE
  * @access Public
  **/
-router.delete('/salons/:id', async (req, res) => {
+router.delete('/salons/:id', async (req, res, next) => {
     try {
         const salon = await Salon.findByIdAndDelete(req.params.id); 
-        if (!salon) return res.status(404).send('Salon not found'); 
-        res.send(salon); 
+        if (!salon) {
+            return next(new ApiError('Salon not found', 404));
+        }
+        res.json({
+            success: true,
+            message: 'Salon deleted successfully',
+            data: salon
+        }); 
     } catch (error) {
-        res.status(500).send(error); 
+        next(new ApiError(error.message, 500));
     }
 });
 

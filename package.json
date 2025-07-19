@@ -1,15 +1,27 @@
 {
-  "name": "project",
+  "name": "docker-node-mongo-starter",
   "version": "1.0.0",
-  "description": "This repository features a Dockerized application built with Node.js and MongoDB.",
+  "description": "A modern, production-ready Node.js API starter kit with Docker, MongoDB, and Express.js",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "start-dev": "nodemon app.js"
+    "start-dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "echo \"Linting not configured yet\"",
+    "format": "echo \"Formatting not configured yet\""
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "docker",
+    "api",
+    "starter",
+    "boilerplate",
+    "mongoose",
+    "rest-api"
+  ],
+  "author": "Your Name",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.1.7"
